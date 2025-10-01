@@ -1,0 +1,6 @@
+@desafio_adonet_HostAddress = http://localhost:5113
+
+GET {{desafio_adonet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

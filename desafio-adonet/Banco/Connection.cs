@@ -13,11 +13,3 @@ namespace desafio_adonet.Banco
     }
 }
 
-//try
-//{
-//    using var connection = new Connection().ObterConexao();
-//   connection.Open();
-//} catch (Exception ex)
-//{
-//   Console.WriteLine(ex.Message);
-//}

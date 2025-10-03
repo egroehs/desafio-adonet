@@ -2,7 +2,6 @@
 using Microsoft.Data.SqlClient;
 namespace desafio_adonet.Banco;
 
-// Data Access Layer
 public class ProdutosDAL
 {
     public IEnumerable<Produto> Listar()

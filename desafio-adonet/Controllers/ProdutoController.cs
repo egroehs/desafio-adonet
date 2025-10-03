@@ -71,5 +71,18 @@ namespace desafio_adonet.Controllers
             return Ok(produtos);
         }
 
+        [HttpGet("produtos-ordem")]
+        public IActionResult GetNomesProdutos()
+        {
+            var produtos = _produtosDAL.Listar();
+
+            var nomes = produtos
+                .Select(p => p.Nome)
+                .OrderBy(n => n)
+                .ToList();
+
+            return Ok(nomes);
+        }
+
     }
 }

@@ -46,5 +46,43 @@ namespace desafio_adonet.Banco
 
             return categoriasOrdenadas;
         }
+
+        public void Remover(int produtoId,  int categoriaId)
+        {
+            using var connection = new Connection().ObterConexao();
+            connection.Open();
+
+            string sql = @"DELETE FROM ProdutoCategoria 
+                   WHERE ProdutoId = @ProdutoId AND CategoriaId = @CategoriaId";
+            
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@ProdutoId", produtoId);
+            command.Parameters.AddWithValue("@CategoriaId", categoriaId);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void Alterar(int produtoId, List<int> novasCategorias)
+        {
+            using var connection = new Connection().ObterConexao();
+            connection.Open();
+
+            string deleteSql = @"DELETE FROM ProdutoCategoria WHERE ProdutoId = @ProdutoId";
+            SqlCommand deleteCmd = new SqlCommand(deleteSql, connection);
+
+            deleteCmd.Parameters.AddWithValue("@ProdutoId", produtoId);
+            deleteCmd.ExecuteNonQuery();
+
+            string insertSql = @"INSERT INTO ProdutoCategoria (ProdutoId, CategoriaId)
+                         VALUES (@ProdutoId, @CategoriaId)";
+
+            foreach (var categoriaId in novasCategorias)
+            {
+                SqlCommand insertCmd = new SqlCommand(insertSql, connection);
+                insertCmd.Parameters.AddWithValue("@ProdutoId", produtoId);
+                insertCmd.Parameters.AddWithValue("@CategoriaId", categoriaId);
+                insertCmd.ExecuteNonQuery();
+            }
+        }
     }
 }

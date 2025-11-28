@@ -1,4 +1,5 @@
 ﻿using desafio_adonet.Banco;
+using desafio_adonet.DTOs;
 using desafio_adonet.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +10,10 @@ namespace desafio_adonet.Controllers
     public class CategoriaController : ControllerBase
     {
         private readonly CategoriasDAL _categoriasDAL;
-        private readonly ProdutoCategoriaDAL _produtoCategoriaDAL;
 
-        public CategoriaController(CategoriasDAL categoriasDAL, ProdutoCategoriaDAL produtoCategoriaDAL)
+        public CategoriaController(CategoriasDAL categoriasDAL)
         {
             _categoriasDAL = categoriasDAL;
-            _produtoCategoriaDAL = produtoCategoriaDAL;
         }
 
 
@@ -29,20 +28,6 @@ namespace desafio_adonet.Controllers
         public IActionResult Listar()
         {
             var categorias = _categoriasDAL.Listar();
-            return Ok(categorias);
-        }
-
-        [HttpPost("associar")]
-        public IActionResult Associar([FromQuery] int produtoId, [FromQuery] int categoriaId)
-        {
-            _produtoCategoriaDAL.Associar(produtoId, categoriaId);
-            return Ok();
-        }
-
-        [HttpGet("categorias-por-produto/{produtoId}")]
-        public IActionResult ObterCategoriasPorProduto(int produtoId)
-        {
-            var categorias = _produtoCategoriaDAL.ObterCategoriasPorProduto(produtoId);
             return Ok(categorias);
         }
 

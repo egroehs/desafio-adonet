@@ -1,5 +1,6 @@
-﻿using desafio_adonet.Models;
-using desafio_adonet.Banco;
+﻿using desafio_adonet.Banco;
+using desafio_adonet.DTOs;
+using desafio_adonet.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace desafio_adonet.Controllers
@@ -9,10 +10,12 @@ namespace desafio_adonet.Controllers
     public class ProdutosController : ControllerBase
     {
          private readonly ProdutosDAL _produtosDAL;
+        private readonly ProdutoCategoriaDAL _produtoCategoriaDAL;
 
-        public ProdutosController(ProdutosDAL produtosDAL)
+        public ProdutosController(ProdutosDAL produtosDAL, ProdutoCategoriaDAL produtoCategoriaDAL)
         {
             _produtosDAL = produtosDAL;
+            _produtoCategoriaDAL = produtoCategoriaDAL;
         }
 
         [HttpGet("listar")]
@@ -82,6 +85,34 @@ namespace desafio_adonet.Controllers
                 .ToList();
 
             return Ok(nomes);
+        }
+
+        [HttpPost("associar")]
+        public IActionResult Associar([FromQuery] int produtoId, [FromQuery] int categoriaId)
+        {
+            _produtoCategoriaDAL.Associar(produtoId, categoriaId);
+            return Ok();
+        }
+
+        [HttpDelete("remover")]
+        public IActionResult Remover([FromQuery] int produtoId, [FromQuery] int categoriaId)
+        {
+            _produtoCategoriaDAL.Remover(produtoId, categoriaId);
+            return Ok(new { mensagem = "Associação removida com sucesso." });
+        }
+
+        [HttpPut("alterar")]
+        public IActionResult Alterar([FromBody] AlterarCategoriasDTO dto)
+        {
+            _produtoCategoriaDAL.Alterar(dto.ProdutoId, dto.Categorias);
+            return Ok(new { mensagem = "Categorias alteradas com sucesso." });
+        }
+
+        [HttpGet("categorias-por-produto/{produtoId}")]
+        public IActionResult ObterCategoriasPorProduto(int produtoId)
+        {
+            var categorias = _produtoCategoriaDAL.ObterCategoriasPorProduto(produtoId);
+            return Ok(categorias);
         }
 
     }
